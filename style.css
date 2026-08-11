@@ -1,0 +1,48 @@
+body {
+    font-family: sans-serif;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 0 20px;   
+}
+/* Add some spacing between the form and the list */
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+/* Style the input fields and button */
+
+input {
+    padding: 8px;
+    font-size: 10px;
+}
+/* Style the button with a dark background and white text, and add a hover effect */
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+/* Change the button background color on hover */
+
+button:hover {
+    background-color: #555;
+}
+/* Style the list of sets */
+
+#sets-list {
+    list-style: none;
+    padding: 0;
+}
+/* Style each list item with padding and a border */
+
+#sets-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+/* Style the delete button with a red background and white text, and add a hover effect */

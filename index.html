@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker</title>
+</head>
+<body>
+    <h1>Gym Tracker</h1>
+
+    <form id="set-form">
+        <input type ="text" id ="exercise-input" placeholder="Exercise Name" required />
+        <input type ="number" id="weight-input" placeholder="Weight (lbs)" required />
+        <input type ="number" id="reps-input" placeholder="Reps" required />
+        <button type ="submit">Log Set</button>
+    </form>
+    <!-- Add a heading for the logged sets -->
+
+    <h2>Logged Sets</h2>
+    <ul id="sets-list"></ul>
+    <!-- Add a list item for each logged set -->
+
+    <script src="script.js"></script>
+</body>
+</html>
