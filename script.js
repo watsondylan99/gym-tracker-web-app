@@ -1,39 +1,65 @@
 const form = document.getElementById('set-form');
 
-const loggedSets = []; // Array to store logged sets
+const savedSets = localStorage.getItem('loggedSets');
+const loggedSets = savedSets ? JSON.parse(savedSets) : [];
+
+function saveSets() {
+    localStorage.setItem('loggedSets', JSON.stringify(loggedSets));
+} // Render the logged sets in the list
 
 function renderSets() {
     const list = document.getElementById('sets-list');
-    list.innerHTML = ""; // Clear the list before rendering
+    list.innerHTML = "";
 
     loggedSets.forEach(function (set) {
         const li = document.createElement('li');
         li.textContent = `${set.exercise}: ${set.weight} lbs x ${set.reps} reps`;
         list.appendChild(li);
     })
-}
-// Call renderSets initially to display any existing sets
+} // Check if the new set is a personal record (PR) for the exercise
+
+function isNewWeightPR(newSet, loggedSets) {
+    const setsForThisExercise = loggedSets.filter(function (set) {
+        return set.exercise === newSet.exercise;
+    });
+
+    if (setsForThisExercise.length === 0) {
+        return true;
+    }
+
+    const weights = setsForThisExercise.map(function (set) {
+        return set.weight;
+    });
+
+    const heaviestWeight = Math.max(...weights);
+
+    return newSet.weight > heaviestWeight;
+} // Handle form submission to log a new set
 
 form.addEventListener('submit', function (event) {
     event.preventDefault();
-    // Handle form submission
 
     const exercise = document.getElementById('exercise-input').value;
     const weight = document.getElementById('weight-input').value;
     const reps = document.getElementById('reps-input').value;
-    // Validate the input values (e.g., check if they are numbers, not empty, etc.)
 
     const newSet = {
         exercise: exercise,
         weight: Number(weight),
         reps: Number(reps)
-    };
-    // Store the new set in an array or send it to a server
+    }; // Check if the new set is a personal record (PR) for the exercise
+
+    const isPR = isNewWeightPR(newSet, loggedSets); // Add the new set to the logged sets, save to localStorage, and render the updated list
 
     loggedSets.push(newSet);
-    renderSets();
-    // Update the UI to display the new set
+    saveSets();
+    renderSets(); // Alert the user if the new set is a personal record (PR) for the exercise
+
+    if (isPR) {
+        alert(`New PR! ${newSet.weight} lbs on ${newSet.exercise}`);
+    } // Log the updated logged sets to the console for debugging purposes
 
     console.log(loggedSets);
-    // Clear the form inputs after submission
 });
+
+renderSets();
