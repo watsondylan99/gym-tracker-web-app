@@ -11,12 +11,29 @@ function renderSets() {
     const list = document.getElementById('sets-list');
     list.innerHTML = "";
 
-    loggedSets.forEach(function (set) {
+    if (loggedSets.length === 0) {
+        const emptyMessage = document.createElement('li');
+        emptyMessage.textContent = "No sets logged yet — log your first one above!";
+        list.appendChild(emptyMessage);
+        return;
+    }
+
+    loggedSets.forEach(function (set, index) {
         const li = document.createElement('li');
-        li.textContent = `${set.exercise}: ${set.weight} lbs x ${set.reps} reps`;
+        li.textContent = `${set.exercise}: ${set.weight} lbs x ${set.reps} reps `;
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener('click', function () {
+            loggedSets.splice(index, 1);
+            saveSets();
+            renderSets();
+        });
+
+        li.appendChild(deleteButton);
         list.appendChild(li);
-    })
-} // Check if the new set is a personal record (PR) for the exercise
+    }) // Add a delete button for each logged set
+}
 
 function isNewWeightPR(newSet, loggedSets) {
     const setsForThisExercise = loggedSets.filter(function (set) {
