@@ -36,6 +36,48 @@ function isNewWeightPR(newSet, loggedSets) {
     return newSet.weight > heaviestWeight;
 } // Handle form submission to log a new set
 
+function getWeightReccommendation(exercise, loggedSets, targetLow, targetHigh) {
+    const mostRecentSet = getMostRecentSet(exercise, loggedSets);
+
+    if(mostRecentSet === null) {
+        return "No history yet - log a set to get a recommendation!";
+    } // If the most recent set's reps are greater than or equal to the target high, suggest increasing the weight
+
+    if (mostRecentSet.reps >= targetHigh) {
+        const newWeight = mostRecentSet.weight + 5;
+        return `Last time: ${mostRecentSet.weight} lbs x ${mostRecentSet.reps} reps. Try increasing to ${newWeight} lbs.`;
+    } // If the most recent set's reps are less than the target low, suggest decreasing the weight
+
+    if (mostRecentSet.reps < targetLow) {
+        const newWeight = mostRecentSet.weight - 5;
+        return `Last time: ${mostRecentSet.weight} lbs x ${mostRecentSet.reps} reps. Consider decreasing to ${newWeight} lbs.`;
+    } // If the most recent set's reps are within the target range, suggest staying at the same weight and aiming for more reps
+
+    return `Last time: ${mostRecentSet.weight} lbs x ${mostRecentSet.reps} reps. Stay at ${mostRecentSet.weight} lbs and aim for more reps.`;
+}
+
+function getMostRecentSet(exercise, loggedSets) {
+    const setsForThisExercise = loggedSets.filter(function (set) {
+        return set.exercise === exercise;
+    });
+
+    if (setsForThisExercise.length === 0) {
+        return null;
+    }
+
+    return setsForThisExercise[setsForThisExercise.length - 1];
+} // Add an event listener to the form to handle submission
+
+const exerciseInput = document.getElementById('exercise-input');
+
+exerciseInput.addEventListener('blur', function () {
+    const exercise = exerciseInput.value;
+    if (exercise === "") return;
+
+    const recommendation = getWeightReccommendation(exercise, loggedSets, 8, 12);
+    document.getElementById('recommendation').textContent = recommendation; //
+});
+
 form.addEventListener('submit', function (event) {
     event.preventDefault();
 
