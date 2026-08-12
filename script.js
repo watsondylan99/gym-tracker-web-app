@@ -89,8 +89,15 @@ form.addEventListener('submit', function (event) {
         exercise: exercise,
         weight: Number(weight),
         reps: Number(reps)
-    }; // Check if the new set is a personal record (PR) for the exercise
+    };
 
+    // Reject invalid input before it ever touches the array, storage, or the page
+    if (newSet.weight <= 0 || newSet.reps <= 0) {
+        alert("Weight and reps must be greater than 0.");
+        return;
+    }
+
+    // Check if the new set is a personal record (PR) for the exercise
     const isPR = isNewWeightPR(newSet, loggedSets); // Add the new set to the logged sets, save to localStorage, and render the updated list
 
     loggedSets.push(newSet);
@@ -102,6 +109,7 @@ form.addEventListener('submit', function (event) {
     } // Log the updated logged sets to the console for debugging purposes
 
     console.log(loggedSets);
+    form.reset();
 });
 
 renderSets();
